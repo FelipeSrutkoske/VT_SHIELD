@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VT_SHIELD V1.0 — URL_SCAN_REPORT</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-brand">
+        <span class="brand-title">VT_SHIELD_V1.0</span>
+        <span class="brand-sub">— URL_SCAN_REPORT</span>
+      </div>
+      <div class="header-actions">
+        <span class="icon-btn" title="Terminal">&#9013;</span>
+        <span class="icon-btn" title="Shield">&#128737;</span>
+        <span class="icon-btn" title="Settings" id="btn_settings">&#9881;</span>
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto">
+      <!-- Loading State -->
+      <div id="loading_state" class="card mt-8" style="display:none;">
+        <div class="status-block" style="border-bottom:none;">
+          <div class="status-label">INITIALIZING SCAN SEQUENCE</div>
+          <div class="flex items-center justify-center gap-4">
+            <div class="spinner"></div>
+            <div style="font-size: 14px; letter-spacing: 0.1em;">ESTABLISHING UPLINK...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error / No Key State -->
+      <div id="error_state" class="card mt-8" style="display:none; border-color: #ff4444;">
+        <div class="status-block" style="border-bottom:none;">
+          <div class="status-label" style="color: #ff4444;">SYSTEM ERROR</div>
+          <div id="error_message" class="text-center" style="color: #ff4444; font-size: 14px; max-width: 80%;"></div>
+          <button id="btn_open_config" class="btn mt-6" style="border-color: #ff4444; color: #ff4444;">OPEN CONFIG</button>
+        </div>
+      </div>
+
+      <!-- Results Card -->
+      <div id="results_card" class="card mt-8 glow-border" style="display:none;">
+        <div class="coordinate-badge">COORD: <span id="coord_val">34.0522° N, 118.2437° W</span></div>
+
+        <!-- Status Indicator -->
+        <div class="status-block">
+          <div class="status-label">SYSTEM ANALYSIS COMPLETE</div>
+          <div id="status_value" class="status-value">[ STATUS: SECURE ]</div>
+          <div class="status-dots">
+            <span id="dot_verified" style="color: var(--vt-green);">● VERIFIED</span>
+            <span id="dot_malicious" class="opacity-40">○ MALICIOUS</span>
+            <span id="dot_phishing" class="opacity-40">○ PHISHING</span>
+          </div>
+        </div>
+
+        <!-- URL Bar -->
+        <div class="mb-8">
+          <label class="form-label" style="opacity: 0.6; margin-bottom: 8px;">SCANNED_TARGET_PATH</label>
+          <div class="url-bar">
+            <span style="font-size: 12px;">&#128279;</span>
+            <span id="scanned_url" class="truncate">...</span>
+            <span id="btn_copy" style="cursor: pointer; font-size: 12px; opacity: 0.7; margin-left: auto;">&#128203;</span>
+          </div>
+        </div>
+
+        <!-- Scan Engines Grid -->
+        <div class="grid-2 mb-8">
+          <div class="card-dim">
+            <div class="card-header">PRIMARY_DETECTION_ENGINES</div>
+            <div id="engine_list" class="engine-list">
+              <!-- populated by JS -->
+            </div>
+          </div>
+          <div class="card-dim">
+            <div class="card-header">REPUTATION_METRICS</div>
+            <div class="space-y-4">
+              <div class="metric">
+                <div class="metric-header">
+                  <span>DOMAIN_TRUST</span>
+                  <span id="metric_trust_val">--</span>
+                </div>
+                <div class="metric-bar">
+                  <div id="metric_trust_bar" class="metric-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+              <div class="metric">
+                <div class="metric-header">
+                  <span>SSL_STRENGTH</span>
+                  <span id="metric_ssl_val">--</span>
+                </div>
+                <div class="metric-bar">
+                  <div id="metric_ssl_bar" class="metric-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+              <div class="metric">
+                <div class="metric-header">
+                  <span>COMMUNITY_SCORE</span>
+                  <span id="metric_community_val">--</span>
+                </div>
+                <div class="metric-bar">
+                  <div id="metric_community_bar" class="metric-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Log Section -->
+        <div class="terminal-log">
+          <div class="terminal-header">
+            <span>PROCESS_LOG_STREAM</span>
+            <span class="animate-pulse" style="color: var(--vt-green);">● LIVE</span>
+          </div>
+          <div id="terminal_lines" class="terminal-lines">
+            <!-- populated by JS -->
+          </div>
+          <div style="margin-top: 4px;">
+            <span style="display: inline-block; width: 8px; height: 16px; background: var(--vt-green); animation: blink 1s step-end infinite; vertical-align: middle;"></span>
+          </div>
+        </div>
+
+        <!-- Bottom Actions -->
+        <div class="mt-8 flex justify-end gap-4">
+          <button id="btn_raw" class="btn">VIEW_RAW_JSON</button>
+          <button id="btn_close" class="btn btn-primary">CLOSE_SESSION</button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Raw JSON Modal -->
+  <div id="raw_modal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; padding: 24px; overflow: auto;">
+    <div class="flex justify-between items-center mb-4">
+      <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em;">RAW_JSON_PAYLOAD</span>
+      <button id="btn_close_raw" class="btn" style="padding: 8px 16px;">CLOSE</button>
+    </div>
+    <pre id="raw_json" style="background: var(--vt-surface); border: 1px solid var(--vt-green); padding: 16px; font-size: 11px; overflow: auto; white-space: pre-wrap; word-break: break-all; max-height: 80vh;"></pre>
+  </div>
+
+  <script src="scan.js?v=2"></script>
+</body>
+</html>

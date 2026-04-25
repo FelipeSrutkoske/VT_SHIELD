@@ -1,0 +1,40 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+
+# Images pasted during development (not part of extension)
+Imagem*.png
+novo-mesmo-erro.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+
+# Archives
+*.zip
+*.tar
+*.gz
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Node (if ever used)
+node_modules/
+package-lock.json
+
+# Build artifacts (if ever added)
+dist/
+build/
+*.crx
+*.pem

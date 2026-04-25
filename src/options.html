@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VT_SHIELD V1.0 — SYSTEM_CONFIG</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .scanline-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: 0.25; }
+  </style>
+</head>
+<body>
+  <div class="scanline-overlay"></div>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-brand">
+        <span class="brand-title" style="font-size: 18px;">VT_SHIELD_V1.0</span>
+        <span class="opacity-40">/</span>
+        <span class="brand-sub" style="opacity: 0.8; font-size: 12px;">SYSTEM_CONFIG</span>
+      </div>
+      <div class="header-actions">
+        <span class="icon-btn" title="Config">&#9881;</span>
+        <span class="icon-btn" title="Shield">&#128737;</span>
+        <span class="icon-btn" title="Terminal">&#9013;</span>
+      </div>
+    </header>
+
+    <main class="flex items-center justify-center">
+      <div class="bg-grid"></div>
+      <div class="w-full max-w-lg space-y-6 relative z-10">
+        <!-- Security Badge -->
+        <div class="flex justify-center mb-8">
+          <div class="relative p-1" style="border: 2px solid var(--vt-green); box-shadow: 0 0 15px rgba(0,255,65,0.3);">
+            <div class="bg-black p-4 flex flex-col items-center gap-2" style="border: 1px solid rgba(0,255,65,0.3);">
+              <div style="font-size: 48px; text-shadow: 0 0 8px rgba(0,255,65,0.4);">&#128273;</div>
+              <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.6;">Authentication Node: 0x8F2</div>
+            </div>
+            <div style="position: absolute; top: -8px; right: -8px; font-size: 10px; background: #000; padding: 0 4px; border: 1px solid var(--vt-green);">SEC_01</div>
+          </div>
+        </div>
+
+        <!-- Configuration Form -->
+        <div class="card" style="border-color: rgba(0,255,65,0.3); background: rgba(0,0,0,0.8);">
+          <div class="version-badge">CFG.V2</div>
+          <label class="form-label" for="api_key">[ ENTER_VIRUSTOTAL_API_KEY ]</label>
+          <div class="relative" style="margin-bottom: 16px;">
+            <input
+              type="password"
+              id="api_key"
+              placeholder="64-character hexadecimal key..."
+              autocomplete="off"
+            />
+            <div style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%);">
+              <div style="width: 8px; height: 16px; background: var(--vt-green); animation: blink 1s step-end infinite;"></div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-4">
+            <button id="btn_save" class="btn w-full">Validate & Save</button>
+            <p style="font-size: 10px; text-align: center; opacity: 0.4; line-height: 1.6;">
+              WARNING: API keys provide access to high-privileged scanning protocols.<br/>
+              Ensure local environment is isolated before transmission.
+            </p>
+          </div>
+
+          <div id="status_msg" class="mt-4" style="font-size: 12px; text-align: center; min-height: 20px;"></div>
+        </div>
+
+        <!-- Status Grid -->
+        <div class="grid-2">
+          <div class="card-dim">
+            <div style="font-size: 10px; opacity: 0.5; margin-bottom: 4px; text-transform: uppercase;">Current Key</div>
+            <div id="key_status" style="font-size: 12px; font-weight: 700;">[NOT SET]</div>
+          </div>
+          <div class="card-dim" style="position: relative; overflow: hidden;">
+            <div style="font-size: 10px; opacity: 0.5; margin-bottom: 4px; text-transform: uppercase;">Connection</div>
+            <div class="flex items-center gap-2">
+              <div id="conn_dot" style="width: 8px; height: 8px; border-radius: 50%; background: #333;"></div>
+              <div id="conn_text" style="font-size: 12px; font-weight: 700;">DISCONNECTED</div>
+            </div>
+            <div style="position: absolute; bottom: 0; right: 0; height: 50%; width: 48px; display: flex; align-items: end; justify-content: end; padding: 4px; gap: 1px;">
+              <div style="background: var(--vt-green); width: 2px; height: 4px;"></div>
+              <div style="background: var(--vt-green); width: 2px; height: 8px;"></div>
+              <div style="background: var(--vt-green); width: 2px; height: 12px;"></div>
+              <div style="background: var(--vt-green); width: 2px; height: 8px;"></div>
+              <div style="background: var(--vt-green); width: 2px; height: 16px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div style="border-top: 1px solid var(--vt-border); padding-top: 16px;">
+          <div class="flex justify-between" style="font-size: 10px; opacity: 0.3; margin-bottom: 8px;">
+            <span>SYS_LOG_09412</span>
+            <span id="log_time">--:--:-- GMT</span>
+          </div>
+          <div id="sys_log" style="font-size: 11px; opacity: 0.6; font-family: monospace; line-height: 1.6;">
+            &gt; Initializing secure handshake...<br/>
+            &gt; Waiting for user input...
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div style="height: 48px;"></div>
+  </div>
+
+  <script src="options.js?v=2"></script>
+</body>
+</html>

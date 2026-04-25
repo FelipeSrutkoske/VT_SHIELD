@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VT_SHIELD</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { width: 320px; height: auto; min-height: 200px; }
+    .popup-body { padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  </style>
+</head>
+<body>
+  <div class="scanline-overlay" style="opacity: 0.15;"></div>
+  <div class="app-container">
+    <header class="app-header" style="padding: 8px;">
+      <div class="header-brand">
+        <span class="brand-title" style="font-size: 14px;">VT_SHIELD_V1.0</span>
+      </div>
+    </header>
+    <main class="popup-body">
+      <div style="font-size: 32px; text-shadow: 0 0 8px rgba(0,255,65,0.4);">&#128737;</div>
+      <div style="font-size: 12px; text-align: center; opacity: 0.8; line-height: 1.5;">
+        Right-click any link to scan with VirusTotal.
+      </div>
+      <button id="btn_open_options" class="btn w-full" style="padding: 10px;">OPEN SYSTEM_CONFIG</button>
+      <div id="key_badge" style="font-size: 10px; opacity: 0.5; text-transform: uppercase;">Key: Not Set</div>
+    </main>
+  </div>
+  <script>
+    document.getElementById('btn_open_options').addEventListener('click', () => {
+      chrome.runtime.openOptionsPage();
+      window.close();
+    });
+    chrome.storage.local.get(['vt_api_key'], (res) => {
+      const badge = document.getElementById('key_badge');
+      if (res.vt_api_key) {
+        badge.textContent = 'Key: [REDACTED]';
+        badge.style.color = '#00FF41';
+      }
+    });
+  </script>
+</body>
+</html>
