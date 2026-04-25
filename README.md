@@ -5,7 +5,7 @@ Extensao Chromium para verificacao de URLs via VirusTotal API.
 ## Instalacao (Modo Desenvolvedor)
 
 1. Abra o Chrome/Edge e acesse `chrome://extensions/`
-2. Ative o **Modo do desenvolvedor** (cant superior direito)
+2. Ative o **Modo do desenvolvedor**
 3. Clique em **Carregar sem compactacao**
 4. Selecione a pasta `src/` deste projeto
 
@@ -22,8 +22,7 @@ Clique direito em qualquer link ou texto selecionado com URL. Agora o menu VT_SH
 ### Verificacao Simplificada
 - Abre um **modal inline** na propria pagina (sem janela nova)
 - Mostra apenas: URL, status **SEGURO / MALICIOSO**, e contagem **X/70 engines**
-- Tematica hacker minimalista com scanlines e glow
-- Fecha com ESC ou clicando fora
+- Fecha com ESC ou clicando fora do modal
 
 ### Verificacao Detalhada
 - Abre popup em nova janela com **relatorio completo**
