@@ -1,6 +1,6 @@
 # VT_SHIELD V1.1
 
-Extensao Chromium para verificacao de URLs via VirusTotal API com tematica terminal hacker.
+Extensao Chromium para verificacao de URLs via VirusTotal API.
 
 ## Instalacao (Modo Desenvolvedor)
 
